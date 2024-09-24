@@ -1,6 +1,6 @@
 <?php
 
-namespace Matondo\GeradorFaturas;
+namespace Matondo;
 
 use Dompdf\Dompdf;
 use Illuminate\Support\Facades\Storage;
