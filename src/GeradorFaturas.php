@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Mail;
 use Matondo\Mail\FaturaMail;
-use Illuminate\Support\Facades\Mail;
 
 class GeradorFaturas
 {
