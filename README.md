@@ -1,39 +1,43 @@
 # Gerador de Faturas
 
-**GeradorFaturas** é uma biblioteca desenvolvida para gerar faturas personalizadas em PDF e enviá-las por e-mail utilizando o **Dompdf** e o **Laravel Mail**.
+GeradorFaturas é uma biblioteca desenvolvida para gerar faturas personalizadas em PDF e enviá-las por e-mail utilizando o Dompdf e o Laravel Mail.
 
-## Instalação
+# Instalação
 
-Primeiro, adicione a biblioteca ao seu projeto utilizando o `composer`:
+Para instalar a biblioteca, utilize o composer:
 
-```bash
+```php
 composer require matondo/gerador-faturas
+```
+# Publicação dos Arquivos
 
-## Publicação dos Arquivos
+Após a instalação, publique os arquivos de visualização da fatura:
 
-Após a instalação, é necessário publicar os arquivos de visualização da fatura:
 
-```bash
+```php
 php artisan vendor:publish --provider="Matondo\MatondoServiceProvider"
+```
+Esse comando criará os arquivos de template da fatura que poderão ser customizados conforme necessário.
 
-Isso criará os arquivos de template da fatura que você poderá customizar.
+# Registro do Service Provider
 
-## Registro do Service Provider
-
-Certifique-se de registrar o MatondoServiceProvider no seu arquivo config/app.php, na seção providers:
+Certifique-se de registrar o MatondoServiceProvider no arquivo config/app.php, na seção providers:
 
 
+```php
 'providers' => [
     // Outros providers
     Matondo\MatondoServiceProvider::class,
 ],
 
+```
 
-Exemplo de Uso
+# Exemplo de Uso
 
-Aqui está um exemplo de como usar a biblioteca para gerar e enviar uma fatura por e-mail.
+Aqui está um exemplo de como utilizar a biblioteca para gerar e enviar uma fatura por e-mail:
 
 
+```php
 use Illuminate\Support\Facades\Route;
 use Matondo\GeradorFaturas;
 
@@ -44,17 +48,17 @@ Route::get('/', function () {
         'data' => '2024-09-25',
         'data_vencimento' => '2024-10-01',
         'moeda' => 'R$',
-        'logo' => 'https://www.popdata.com.br/wp-content/uploads/2024/06/logo.png',
+        'logo' => 'https://www.empresa.com/wp-content/uploads/2024/06/logo.png',
         'empresa' => [
-            'nome' => 'PopData Software',
+            'nome' => 'Empresa Software',
             'endereco' => 'Rua Exemplo, 123, São Paulo, SP',
-            'email' => 'contato@popdata.com.br',
+            'email' => 'contato@empresa.com.br',
             'telefone' => '(11) 98765-4321',
         ],
         'cliente' => [
             'nome' => 'Cliente Exemplo',
             'endereco' => 'Rua Cliente, 456, São Paulo, SP',
-            'email' => 'matondojoaokitemoco@gmail.com',
+            'email' => 'cliente@example.com',
             'telefone' => '(11) 91234-5678',
         ],
         'itens' => [
@@ -67,37 +71,43 @@ Route::get('/', function () {
 
     $fatura = new GeradorFaturas($dados);
 
-    return $fatura->download(123, true); // Gera a fatura, salva e envia por e-mail.
+    return $fatura->download($dados['numero_fatura'], true); // Gera a fatura, salva e envia por e-mail.
 });
 
-Parâmetros
+```
 
-dados: Array contendo as informações da fatura, empresa e cliente.
-numeroDaFatura: Número da fatura gerada.
-enviarPorEmail: Defina como true para enviar automaticamente a fatura por e-mail.
+# Parâmetros
 
-Funcionalidades
+- **dados**: Array contendo as informações da fatura, empresa e cliente.
+- **numeroDaFatura**: Número da fatura gerada.
+- **enviarPorEmail**: Defina como true para enviar automaticamente a fatura por e-mail.
 
-Geração de PDF: Gera uma fatura em PDF personalizada com os dados fornecidos.
-Envio por E-mail: Envia a fatura gerada para o e-mail do cliente especificado.
-Download de Fatura: Permite baixar a fatura diretamente no navegador.
+# Funcionalidades
 
-Como Funciona
+- **Geração de PDF**: Cria uma fatura em PDF personalizada com os dados fornecidos.
+- **Envio por E-mail**: Envia a fatura gerada para o e-mail do cliente especificado.
+- **Download de Fatura**: Permite baixar a fatura diretamente no navegador.
 
-Renderização da Fatura: Os dados fornecidos são usados para preencher um template HTML de fatura.
+# Como Funciona
 
-Geração de PDF: O HTML é convertido para PDF usando o Dompdf.
+- **Renderização da Fatura**: Os dados fornecidos são utilizados para preencher um template HTML de fatura.
+- **Geração de PDF:** O HTML gerado é convertido para PDF utilizando o Dompdf.
+- **Armazenamento:** O PDF gerado é salvo no diretório storage/public/faturas.
+- **Envio por E-mail:** A fatura é enviada para o cliente por e-mail utilizando a classe FaturaMail.
+- **Download**: O PDF gerado pode ser baixado diretamente no navegador.
 
-Armazenamento: O PDF gerado é salvo em storage/public/faturas.
+# Personalização
 
-Envio por E-mail: A fatura é enviada para o cliente por e-mail utilizando a classe FaturaMail.
+Os templates de fatura podem ser encontrados no diretório publicado após a execução do comando:
 
-Download: O PDF gerado pode ser baixado diretamente.
 
-Personalização
+```php
+php artisan vendor:publish
+```
 
-Os templates de fatura podem ser encontrados no diretório publicado após o comando php artisan vendor:publish. Você pode modificá-los para atender às necessidades da sua empresa ou projeto.
+Você pode modificá-los para atender às necessidades da sua empresa ou projeto.
 
-Licença
+# Licença
 
 Este projeto está licenciado sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
+
