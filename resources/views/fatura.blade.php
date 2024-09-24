@@ -1,66 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
     <meta charset="utf-8" />
     <title>{{ $titulo }}</title>
     <style>
-        .invoice-box {
-            max-width: 800px;
-            margin: auto;
-            padding: 30px;
-            border: 1px solid #eee;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-            font-size: 16px;
-            line-height: 24px;
+        body {
             font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
             color: #555;
+            margin: 0;
+            padding: 0;
+        }
+        .invoice-box {
+            max-width: 700px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            line-height: 20px;
+            background-color: #fff;
+        }
+        .title img {
+            width: 150px; /* Tamanho ajustado para 150px */
+            height: auto;
+            display: block;
+            margin: 0 auto 20px; /* Centraliza a logo com espaçamento em baixo */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0; /* Espaçamento superior e inferior */
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2; /* Cor de fundo para o cabeçalho */
+            font-weight: bold;
+        }
+        .total {
+            font-weight: bold;
+            background-color: #f9f9f9; /* Cor de fundo para a linha total */
+        }
+        .header, .footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 18px;
+            color: #333;
         }
     </style>
 </head>
 <body>
     <div class="invoice-box">
-        <table cellpadding="0" cellspacing="0">
-            <tr class="top">
-                <td colspan="2">
-                    <table>
-                        <tr>
-                            <td class="title">
-                                <img src="{{ $logo }}" alt="Logo Empresa" style="width:100%; max-width: 300px;">
-                            </td>
-                            <td>
-                                {{ $titulo }} #: {{ $numero_fatura }}<br>
-                                Data: {{ $data }}<br>
-                                Vencimento: {{ $data_vencimento }}
-                            </td>
-                        </tr>
-                    </table>
+        <div class="header">
+            <img src="{{ $logo }}" alt="Logo Empresa" class="title" width="200px">
+            <h1>{{ $titulo }}</h1>
+            <p>Fatura #: {{ $numero_fatura }}</p>
+            <p>Data: {{ $data }} | Vencimento: {{ $data_vencimento }}</p>
+            <p>Situação: {{ $situacao }}</p> 
+        </div>
+        <table class="information">
+            <tr>
+                <td>
+                    <strong>{{ $empresa['nome'] }}</strong><br>
+                    {{ $empresa['endereco'] }}<br>
+                    Email: {{ $empresa['email'] }}<br>
+                    Telefone: {{ $empresa['telefone'] }}
+                </td>
+                <td>
+                    <strong>{{ $cliente['nome'] }}</strong><br>
+                    Endereço: {{ $cliente['endereco'] }}<br>
+                    Email: {{ $cliente['email'] }}<br>
+                    Telefone: {{ $cliente['telefone'] }}
                 </td>
             </tr>
-
-            <tr class="information">
-                <td colspan="2">
-                    <table>
-                        <tr>
-                            <td>
-                                {{ $empresa['nome'] }}<br>
-                                {{ $empresa['endereco'] }}<br>
-                                Email: {{ $empresa['email'] }}<br>
-                                Telefone: {{ $empresa['telefone'] }}
-                            </td>
-                            <td>
-                                {{ $cliente['nome'] }}<br>
-                                Endereço: {{ $cliente['endereco'] }}<br>
-                                Email: {{ $cliente['email'] }}<br>
-                                Telefone: {{ $cliente['telefone'] }}
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-
+        </table>
+        <table class="items">
             <tr class="heading">
-                <td>Item</td>
-                <td>Preço</td>
+                <th>Item</th>
+                <th>Preço</th>
             </tr>
             @foreach ($itens as $item)
                 <tr class="item">
@@ -73,10 +93,13 @@
                 </tr>
             @endforeach
             <tr class="total">
-                <td></td>
-                <td>Total: {{ $moeda }} {{ number_format($total, 2, ',', '.') }}</td>
+                <td>Total</td>
+                <td>{{ $moeda }} {{ number_format($total, 2, ',', '.') }}</td>
             </tr>
         </table>
+        <div class="footer">
+            <p>Obrigado pela sua compra!</p>
+        </div>
     </div>
 </body>
 </html>

@@ -5,12 +5,14 @@ namespace Matondo;
 use Dompdf\Dompdf;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use Matondo\Mail\FaturaMail;
+use Illuminate\Support\Facades\Mail;
 
 class GeradorFaturas
 {
     protected $dados;
-    
+
     public function __construct($dados)
     {
         $this->dados = $dados;
@@ -47,12 +49,25 @@ class GeradorFaturas
 
     protected function renderizarFatura()
     {
-        View::make('matondo::fatura', $this->dados)->render();
+        return View::make('matondo::fatura', $this->dados)->render();
     }
 
-    public function download($numeroDaFatura)
+    public function download($numeroDaFatura, $enviarPorEmail = false)
     {
         $nomeArquivo = $this->salvar($numeroDaFatura); 
+        
+        if ($enviarPorEmail) {
+            $this->enviarFaturaPorEmail($nomeArquivo);
+        }
+
         return response()->download(storage_path("app/public/faturas/{$nomeArquivo}")); 
     }
+
+    protected function enviarFaturaPorEmail($nomeArquivo)
+    {
+        $emailDestinatario = $this->dados['cliente']['email'];
+        Mail::to($emailDestinatario)->send(new FaturaMail($this->dados, $nomeArquivo));
+    }
+
 }
+
