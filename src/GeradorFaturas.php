@@ -4,6 +4,7 @@ namespace Matondo;
 
 use Dompdf\Dompdf;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 
 class GeradorFaturas
@@ -46,7 +47,7 @@ class GeradorFaturas
 
     protected function renderizarFatura()
     {
-        return view('fatura', $this->dados)->render();
+        View::make('matondo::fatura', $this->dados)->render();
     }
 
     public function download($numeroDaFatura)
