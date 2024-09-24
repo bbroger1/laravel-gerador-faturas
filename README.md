@@ -9,15 +9,6 @@ Para instalar a biblioteca, utilize o composer:
 ```php
 composer require matondo/gerador-faturas
 ```
-# Publicação dos Arquivos
-
-Após a instalação, publique os arquivos de visualização da fatura:
-
-
-```php
-php artisan vendor:publish --provider="Matondo\MatondoServiceProvider"
-```
-Esse comando criará os arquivos de template da fatura que poderão ser customizados conforme necessário.
 
 # Registro do Service Provider
 
@@ -31,6 +22,16 @@ Certifique-se de registrar o MatondoServiceProvider no arquivo config/app.php, n
 ],
 
 ```
+
+# Publicação dos Arquivos
+
+Após a registrar o MatondoServiceProvider, publique os arquivos de visualização da fatura:
+
+
+```php
+php artisan vendor:publish --provider="Matondo\MatondoServiceProvider"
+```
+Esse comando criará os arquivos de template da fatura que poderão ser customizados conforme necessário.
 
 # Exemplo de Uso
 
