@@ -16,7 +16,7 @@ class MatondoServiceProvider extends ServiceProvider
         ], 'matondo-views');
 
         $this->publishes([
-            __DIR__.'/../Mail/FaturaMail.php' => app_path('Mail/FaturaMail.php'),
+            __DIR__.'/./Mail/FaturaMail.php' => app_path('Mail/FaturaMail.php'),
         ], 'matondo-mail');
     }
 
