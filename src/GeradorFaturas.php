@@ -3,8 +3,9 @@
 namespace Matondo\GeradorFaturas;
 
 use Dompdf\Dompdf;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
-use Matondo\GeradorFaturas\FaturaTemplate;
+use Illuminate\Support\Str;
 
 class GeradorFaturas
 {
@@ -28,15 +29,30 @@ class GeradorFaturas
         return $pdf->output();
     }
 
-    public function salvar($caminhoArquivo)
+    public function salvar($numeroDaFatura)
     {
         $output = $this->gerar();
-        file_put_contents($caminhoArquivo, $output);
+
+        $timestamp = now()->timestamp;
+        $nomeArquivo = "fatura3{$numeroDaFatura}-{$timestamp}.pdf"; 
+
+        if (!Storage::exists('public/faturas')) {
+            Storage::makeDirectory('public/faturas');
+        }
+
+        Storage::put("public/faturas/{$nomeArquivo}", $output);
+
+        return $nomeArquivo;
     }
 
     protected function renderizarFatura()
     {
-        $template = new FaturaTemplate($this->dados);
-        return $template->renderizar();
+        return View::make('fatura', $this->dados)->render();
+    }
+
+    public function download($numeroDaFatura)
+    {
+        $nomeArquivo = $this->salvar($numeroDaFatura); 
+        return response()->download(storage_path("app/public/faturas/{$nomeArquivo}")); 
     }
 }
