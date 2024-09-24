@@ -1,0 +1,20 @@
+{
+    "name": "matondo/gerador-faturas",
+    "description": "Pacote para gerar faturas personalizadas usando DOMPDF",
+    "type": "library",
+    "require": {
+        "dompdf/dompdf": "^3.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Matondo\\GeradorFaturas\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Matondo João",
+            "email": "matondojoaokitemoco@gmail.com"
+        }
+    ]
+}
